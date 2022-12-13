@@ -48,7 +48,7 @@
   		imot=(-vbat+Math.sqrt(vbat*vbat-4*rtotal*power_req) )/(-2*rtotal);
   		power=imot*vbat;
   		range=(vbat*abat*3600/power)*(1/3600)*spd;
-  		alert(range+' km');
+  		alert('Range: '+range+' km \nPower draw: '+power+' W \nBattery current: '+imot+' A');
   		
   	}
   </script>
