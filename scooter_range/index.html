@@ -5,6 +5,43 @@
   <title>E-scooter range approximator</title>
 </head>
 <body>
-  <label for="vbat">Battery voltage:</label><br><input type="number" id="vbat" name="vbat" value="36" ><br>
+  <label for="spd">Speed(km/h):</label><br><input type="text" id="spd" name="spd" value="18" ><br><br>
+  <hr>
+  <label for="vbat">Battery voltage (V):</label><br><input type="text" id="vbat" name="vbat" value="36" ><br><br>
+  <label for="abat">Battery capacity (Ah):</label><br><input type="text" id="abat" name="abat" value="10" ><br><br>
+  <hr>
+  <label for="ef">Battery-controller-motor efficiency (%):</label><br><input type="text" id="ef" name="ef" value="50" ><br><br>
+  <hr>
+  <label for="m">Rider's weight (kg):</label><br><input type="text" id="m" name="m" value="100" ><br><br>
+  <label for="a">Rider's area (m^2):</label><br><input type="text" id="a" name="a" value="1" ><br><br>
+  <label for="cd">Rider's drag coefficient:</label><br><input type="text" id="cd" name="cd" value="1.2" ><br><br>
+  <hr>
+  <label for="w1">Weight distribution (front wheel load, percent of total weight)%:</label><br><input type="text" id="w1" name="w1" value="50" ><br><br>
+  <label for="crr1">Rolling friction coefficient, front wheel:</label><br><input type="text" id="crr1" name="crr1" value="0.0055" ><br><br>
+  <label for="crr2">Rolling friction coefficient, rear wheel:</label><br><input type="text" id="crr2" name="crr2" value="0.0055" ><br><br>
+  <button onclick="calc()">Calculate!</button>
+  <script>
+  	function calc(){
+  		vbat=document.getElementById('vbat').value;
+  		abat=document.getElementById('abat').value;
+  		ef=document.getElementById('ef').value;
+  		m=document.getElementById('m').value;
+  		a=document.getElementById('a').value;
+  		cd=document.getElementById('cd').value;
+  		rho=1.2;
+  		w1=document.getElementById('w1').value;
+  		crr1=document.getElementById('crr1').value;
+  		crr2=document.getElementById('crr2').value;
+  		spd=document.getElementById('spd').value;
+  		
+  		energy=vbat*abat*3600*ef*0.01;
+  		drag=rho*0.5*cd*(spd/3.6)*(spd/3.6)*a;
+  		froll=w1*0.01*crr1*m*9.81;
+  		rroll=(100-w1)*0.01*crr2*m*9.81;
+  		range=0.001*((energy)/(drag+froll+rroll))
+  		alert(range+' km');
+  		
+  	}
+  </script>
 </body>
 </html>
