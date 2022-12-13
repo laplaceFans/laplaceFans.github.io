@@ -5,6 +5,9 @@
   <title>E-scooter range approximator</title>
 </head>
 <body>
+  <h1>E-scooter range approximator</h1>
+  <p>This calculator would calculate range of your scooter. Please note that it might be inaccurate, and your feedback might help improve it (<a href="https://github.com/laplaceFans/laplaceFans.github.io/issues">submit an issue here</a>)</p>
+  <hr>
   <label for="spd">Speed(km/h):</label><br><input type="text" id="spd" name="spd" value="18" ><br><br>
   <hr>
   <label for="vbat">Battery voltage (V):</label><br><input type="text" id="vbat" name="vbat" value="36" ><br><br>
@@ -14,6 +17,7 @@
   <label for="rdson">Motor controller MOSFET RdsOn (mOhm):</label><br><input type="text" id="rdson" name="rdson" value="11" ><br><br>
   <label for="rmot">Motor phase-phase winding resistance (mOhm):</label><br><input type="text" id="rmot" name="rmot" value="164"><br><br>
   <label for="ef">Miscellaneous losses(%):</label><br><input type="text" id="ef" name="ef" value="15" ><br><br>
+  <p>Motor resistance can be calculated from cross section of winding, length (which is basically 2x(tooth width+tooth height) and amount of turns. I don't know if my value is accurate but should be good enough for 250-350W motors )</p>
   <hr>
   <label for="m">Rider's weight (kg):</label><br><input type="text" id="m" name="m" value="100" ><br><br>
   <label for="a">Rider's area (m^2):</label><br><input type="text" id="a" name="a" value="1" ><br><br>
