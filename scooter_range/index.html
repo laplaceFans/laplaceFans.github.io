@@ -10,35 +10,44 @@
   <label for="vbat">Battery voltage (V):</label><br><input type="text" id="vbat" name="vbat" value="36" ><br><br>
   <label for="abat">Battery capacity (Ah):</label><br><input type="text" id="abat" name="abat" value="10" ><br><br>
   <hr>
-  <label for="ef">Battery-controller-motor efficiency (%):</label><br><input type="text" id="ef" name="ef" value="50" ><br><br>
+  <label for="esr">Battery pack ESR (cell ESR) (mOhm):</label><br><input type="text" id="esr" name="esr" value="65" ><br><br>
+  <label for="rdson">Motor controller MOSFET RdsOn (mOhm):</label><br><input type="text" id="rdson" name="rdson" value="11" ><br><br>
+  <label for="rmot">Motor phase-phase winding resistance (mOhm):</label><br><input type="text" id="rmot" name="rmot" value="164"><br><br>
+  <label for="ef">Miscellaneous losses(%):</label><br><input type="text" id="ef" name="ef" value="15" ><br><br>
   <hr>
   <label for="m">Rider's weight (kg):</label><br><input type="text" id="m" name="m" value="100" ><br><br>
   <label for="a">Rider's area (m^2):</label><br><input type="text" id="a" name="a" value="1" ><br><br>
-  <label for="cd">Rider's drag coefficient:</label><br><input type="text" id="cd" name="cd" value="1.2" ><br><br>
+  <label for="cd">Rider's drag coefficient:</label><br><input type="text" id="cd" name="cd" value="1.3" ><br><br>
   <hr>
   <label for="w1">Weight distribution (front wheel load, percent of total weight)%:</label><br><input type="text" id="w1" name="w1" value="50" ><br><br>
-  <label for="crr1">Rolling friction coefficient, front wheel:</label><br><input type="text" id="crr1" name="crr1" value="0.0055" ><br><br>
-  <label for="crr2">Rolling friction coefficient, rear wheel:</label><br><input type="text" id="crr2" name="crr2" value="0.0055" ><br><br>
+  <label for="crr1">Rolling friction coefficient, front wheel:</label><br><input type="text" id="crr1" name="crr1" value="0.025" ><br><br>
+  <label for="crr2">Rolling friction coefficient, rear wheel:</label><br><input type="text" id="crr2" name="crr2" value="0.025" ><br><br>
   <button onclick="calc()">Calculate!</button>
   <script>
   	function calc(){
-  		vbat=document.getElementById('vbat').value;
-  		abat=document.getElementById('abat').value;
-  		ef=document.getElementById('ef').value;
-  		m=document.getElementById('m').value;
-  		a=document.getElementById('a').value;
-  		cd=document.getElementById('cd').value;
+  		vbat=parseFloat(document.getElementById('vbat').value);
+  		abat=parseFloat(document.getElementById('abat').value);
+  		ef=parseFloat(document.getElementById('ef').value);
+      		rdson=parseFloat(document.getElementById('rdson').value);
+      		rmot=parseFloat(document.getElementById('rmot').value);
+      		esr=parseFloat(document.getElementById('esr').value);
+  		m=parseFloat(document.getElementById('m').value);
+  		a=parseFloat(document.getElementById('a').value);
+  		cd=parseFloat(document.getElementById('cd').value);
   		rho=1.2;
-  		w1=document.getElementById('w1').value;
-  		crr1=document.getElementById('crr1').value;
-  		crr2=document.getElementById('crr2').value;
-  		spd=document.getElementById('spd').value;
+  		w1=parseFloat(document.getElementById('w1').value);
+  		crr1=parseFloat(document.getElementById('crr1').value);
+  		crr2=parseFloat(document.getElementById('crr2').value);
+  		spd=parseFloat(document.getElementById('spd').value);
   		
-  		energy=vbat*abat*3600*ef*0.01;
-  		drag=rho*0.5*cd*(spd/3.6)*(spd/3.6)*a;
-  		froll=w1*0.01*crr1*m*9.81;
-  		rroll=(100-w1)*0.01*crr2*m*9.81;
-  		range=0.001*((energy)/(drag+froll+rroll))
+  		airdrag=rho*0.5*cd*(spd/3.6)*(spd/3.6)*(spd/3.6)*a;
+  		froll=w1*0.01*crr1*m*9.81*(spd/3.6);
+  		rroll=(100-w1)*0.01*crr2*m*9.81*(spd/3.6);
+  		power_req=(airdrag+froll+rroll)*(100+ef)*0.01;
+  		rtotal=0.001*(rdson+rmot+esr);
+  		imot=(-vbat+Math.sqrt(vbat*vbat-4*rtotal*power_req) )/(-2*rtotal);
+  		power=imot*vbat;
+  		range=(vbat*abat*3600/power)*(1/3600)*spd;
   		alert(range+' km');
   		
   	}
